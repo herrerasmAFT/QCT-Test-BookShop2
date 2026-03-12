@@ -1,6 +1,12 @@
-﻿@model Bookstore.Web.Areas.Admin.Models.Orders.OrderIndexViewModel
+@model Bookstore.Web.Areas.Admin.Models.Orders.OrderIndexViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 @{ ViewData["Title"] = "Orders"; }
+@{
+    var _osPropInfo = Model.Filters.GetType().GetProperty(nameof(Model.Filters.OrderStatusFilter));
+    var _osPropType = _osPropInfo!.PropertyType;
+    var _osEnumType = System.Nullable.GetUnderlyingType(_osPropType) ?? _osPropType;
+}
 
 <div class="d-flex m-3">
     <h5 class="me-auto">Orders</h5>
@@ -11,7 +17,7 @@
         <form class="row row-cols-lg-auto g-3 align-items-center" method="get">
             <div class="col-12">
                 <label class="visually-hidden" for="OrderStatusSelect">Reference data type</label>
-                @Html.EnumDropDownListFor(a => a.Filters.OrderStatusFilter, "All Order Statuses", new { @class = "form-select" })
+                @Html.DropDownListFor(a => a.Filters.OrderStatusFilter, Html.GetEnumSelectList(_osEnumType), "All Order Statuses", new { @class = "form-select" })
             </div>
             <div class="col-12">
                 <label class="visually-hidden" for="OrderStatusSelect">Order date from</label>
